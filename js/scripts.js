@@ -1,8 +1,11 @@
+//Selecting the gallery and modal container from the HTML for later use
 const gallery = document.getElementById('gallery');
 const modal = document.querySelector('.modal-container');
+//userss will contain the array of objects from the API for later use
 let userss = [];
+// regex to format the date of birth properly in the modal
 const regex = /^(\d{4})-(\d{2})-(\d{2}).*$/;
-
+//This async function retrieves a Promise that contains 12 random fake users, puts the response in userss and then calls the displayUsers function
 async function getRandomUsers() {
     try {
       const response = await fetch('https://randomuser.me/api/?results=12');
@@ -13,7 +16,7 @@ async function getRandomUsers() {
       console.log('There was an error: ', error);
     }
   };
-  
+  //displayUsers will loop thru the response format and display the fake user objects on the page based on the given mockup
   function displayUsers(data) {
     data.forEach((user) => {
       gallery.insertAdjacentHTML('beforeend', `
@@ -31,7 +34,7 @@ async function getRandomUsers() {
     });    
     }
 
-
+//This event listener with listen for a click on one of the fake user cards and bring up a modal with more detailed information on the person
         gallery.addEventListener('click', (e) => {
       const cardDiv = e.target.closest('div.card');
       if (cardDiv) {
@@ -53,9 +56,11 @@ async function getRandomUsers() {
                  <p class="modal-text">Birthday: ${prova.dob.date.replace(/^(\d{4})-(\d{2})-(\d{2}).*$/, '$2/$3/$1')}</p>
              </div>
     ` );
+//This event listener will activate the X button on the top right of the modal to close it
     document.getElementById('modal-close-btn').addEventListener('click', (e) =>{
 
       modal.setAttribute("hidden", "");
+      modal.innerHTML = '';
   
   });  
 
@@ -64,6 +69,5 @@ async function getRandomUsers() {
   });
 
     
-
-
+//This starts the program when the HTML page is loaded
   getRandomUsers();
